@@ -6,7 +6,7 @@ import time
 import concurrent.futures
 
 def function_sleep():
-    time.sleep(25)
+    time.sleep(70)
 
 def main():
     

@@ -16,7 +16,24 @@ class process_tool:
         command = 'ps -ac -o user,pid,cmd' #running processes, cmd name based on exe, and pid
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         output, error = process.communicate()
-        print(str(output, encoding)) #output is a byte, but we need it as astring(hence we must decode the byte string and make it a character(unicode) string)
+        
+        #output is a byte, but we need it as a string- hence we must decode the byte string and make it a character(unicode) string
+        print(str(output, encoding)) 
+
+    def print_threads(self, pid):
+        """
+        Lists all of the running threads
+        within the process boundary
+        """
+
+        encoding = 'utf-8'
+        command = f'ps -T -p {pid} -o user,pid,spid,cmd'
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = process.communicate()
+
+        #output is a byte, but we need it as a string- hence we must decode the byte string and make it a character(unicode) string
+        print(str(output, encoding))
+
 
     def print_help(self):
         """
@@ -49,7 +66,19 @@ def main():
         
         # print running threads within process boundary
         if sys.argv[1] == "rt":
-            pass
+            # first check if there is a second argument
+            if len(sys.argv) >= 3:
+                #check if the third argument is a number
+                try:
+                    val = int(sys.argv[2])
+                except ValueError:
+                    print('Enter valid process id(Integer')
+                
+                #run command to print process id
+                processes.print_threads(val)
+            
+
+        
 
     else:
         processes.print_help()    
