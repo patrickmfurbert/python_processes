@@ -12,7 +12,7 @@ class process_tool:
         Prints out the
         current running processes
         """
-        command = 'ps -rc -o pid,cmd' #running processes, cmd name based on exe, and pid
+        command = 'ps -rc -o user,pid,cmd' #running processes, cmd name based on exe, and pid
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         output, error = process.communicate()
         print(output)
