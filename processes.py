@@ -12,10 +12,11 @@ class process_tool:
         Prints out the
         current running processes
         """
-        command = 'ps -rc -o user,pid,cmd' #running processes, cmd name based on exe, and pid
+        encoding = 'utf-8' 
+        command = 'ps -ac -o user,pid,cmd' #running processes, cmd name based on exe, and pid
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         output, error = process.communicate()
-        print(output)
+        print(str(output, encoding)) #output is a byte, but we need it as astring(hence we must decode the byte string and make it a character(unicode) string)
 
     def print_help(self):
         """
