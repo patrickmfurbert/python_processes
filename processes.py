@@ -3,6 +3,7 @@
 
 import subprocess
 import sys
+import re
 
 class process_tool:
 
@@ -51,6 +52,28 @@ class process_tool:
         for object in shared_objects:
             print(object)
 
+    def print_executable_pages(self, pid):
+        """
+        Prints the address ranges for the executable
+        pages in the process
+        """
+        # Regular Expression
+        expression = '([0-9A-Fa-f]+-[0-9A-Fa-f]+) ([-r][-w][-x][-p])'
+
+        # Regular Expresson Object
+        regex = re.compile(expression)
+
+        with open(f'/proc/{pid}/maps') as file:
+            maps = [line.rstrip() for line in file]
+
+        print(f'Address Ranges Executable Pages in Proccess {pid}:')
+        for line in maps:
+            try:
+                if 'x' in regex.search(line).group(2):
+                    print(regex.search(line).group(1))
+            except AttributeError:
+                pass
+
 
 
     def print_help(self):
@@ -62,7 +85,9 @@ class process_tool:
              '1.) No arguments - Prints the help\n' \
              '2.) rp           - Prints running process\n' \
              '3.) rt <pid>     - Prints running threads within process boundary\n' \
-             '4.) lm <pid>     - Prints loaded modules within the processes\n '
+             '4.) lm <pid>     - Prints loaded modules within the processes\n' \
+             #'5.) ep <pid>     - Prints address ranges for executable pages within process\n' \    
+             #'6.) rm <pid> <start_address> <end_address> - Dumps memory for specified addresses\n'
         
         print(help)
 
@@ -105,8 +130,22 @@ def main():
                 
                 #run command to print process id
                 processes.print_loaded_modules(val)
+
+        # print loaded modules for specified process
+        if sys.argv[1] == "ep":
+            # first check if there is a second argument
+            if len(sys.argv) >= 3:
+                #check if the third argument is a number
+                try:
+                    val = int(sys.argv[2])
+                except ValueError:
+                    print('Enter valid process id(Integer')
+                
+                #run command to print process id
+                processes.print_executable_pages(val)
         
 
+        
     else:
         processes.print_help()    
 
