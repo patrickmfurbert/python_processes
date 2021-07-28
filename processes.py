@@ -25,7 +25,6 @@ class process_tool:
         Lists all of the running threads
         within the process boundary
         """
-
         encoding = 'utf-8'
         command = f'ps -T -p {pid} -o user,pid,spid,cmd'
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -33,6 +32,25 @@ class process_tool:
 
         #output is a byte, but we need it as a string- hence we must decode the byte string and make it a character(unicode) string
         print(str(output, encoding))
+
+    def print_loaded_modules(self, pid):
+        """
+        Prints shared objects for the 
+        specified pid
+        """
+        maps = []
+        shared_objects = set()
+
+        with open(f'/proc/{pid}/maps') as file:
+            maps = [line.rstrip() for line in file]
+
+        for line in maps:
+            if '.so' in line.split('/')[-1]:
+                shared_objects.add(line.split('/')[-1])
+
+        for object in shared_objects:
+            print(object)
+
 
 
     def print_help(self):
@@ -42,16 +60,14 @@ class process_tool:
 
         help = 'Process Tool Help\n' \
              '1.) No arguments - Prints the help\n' \
-             '2.) rp - Prints running process\n' \
-             '3.) rt - Prints running threads within process boundary\n' \
-             '4.) lm - Prints loaded modules within the processes\n '
+             '2.) rp           - Prints running process\n' \
+             '3.) rt <pid>     - Prints running threads within process boundary\n' \
+             '4.) lm <pid>     - Prints loaded modules within the processes\n '
         
         print(help)
 
 
 def main():
-
-    
 
 
     # create process_tool object
@@ -76,8 +92,19 @@ def main():
                 
                 #run command to print process id
                 processes.print_threads(val)
-            
 
+        # print loaded modules for specified process
+        if sys.argv[1] == "lm":
+            # first check if there is a second argument
+            if len(sys.argv) >= 3:
+                #check if the third argument is a number
+                try:
+                    val = int(sys.argv[2])
+                except ValueError:
+                    print('Enter valid process id(Integer')
+                
+                #run command to print process id
+                processes.print_loaded_modules(val)
         
 
     else:
