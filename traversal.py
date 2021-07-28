@@ -16,8 +16,11 @@ for line in maps:
         shared_objects.add(line.split('/')[-1])
 
 
-for object in shared_objects:
-    print(object)
+# for object in shared_objects:
+#     print(object)
+
+for object in maps:
+    print(maps)
 
 
 
