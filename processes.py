@@ -82,9 +82,11 @@ class process_tool:
         prints memory for 
         specified start and end address
         """
+        start_addr = int('0x' + start, 16)
+        end_addr = int('0x' + end, 16)
         mem_file = open(f"/proc/{pid}/mem", 'rb', 0)
-        mem_file.seek(start)
-        hex = binascii.hexlify(mem_file.read(end-start)).decode('ascii')
+        mem_file.seek(int(start_addr))
+        hex = binascii.hexlify(mem_file.read(end_addr-start_addr)).decode('ascii')
 
         bytes = [hex[i:i+2] for i in range(0, len(hex), 2)]
 
@@ -160,6 +162,19 @@ def main():
                 
                 #run command to print process id
                 processes.print_executable_pages(val)
+        
+        # print memory for specified process at starting and ending address
+        if sys.argv[1] == "rm":
+            # first check if there is a second argument
+            if len(sys.argv) == 5:
+                #check if the third argument is a number
+                try:
+                    val = int(sys.argv[2])
+                except ValueError:
+                    print('Enter valid process id(Integer')
+                
+                #run command to print process id
+                processes.print_memory(val, sys.argv[3], sys.argv[4])
         
 
         
