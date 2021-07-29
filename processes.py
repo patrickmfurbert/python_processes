@@ -107,7 +107,8 @@ class process_tool:
              '3.) rt <pid>     - Prints running threads in multithread process\n' \
              '4.) lm <pid>     - Prints loaded modules within the processes\n' \
              '5.) ep <pid>     - Prints address ranges for executable pages within process\n' \
-             '6.) rm <pid> <start_address> <end_address> - Dumps memory for specified addresses\n'
+             '6.) rm <pid> <start_address> <end_address> - prints memory for specified addresses\n' \
+             '\n\nExample read memory (#6): \npython3 processes.py rm 93125 7fdd86f40000 7fdd8708b000'    
         
         print(help)
 

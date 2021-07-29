@@ -2,6 +2,8 @@
 
 Uses Python 3.9.2 64-bit on Kali Linux
 
+type python3 processes.py for help menu
+
 Example commands: 
 
 python3 processes.py rp (Prints running process)
