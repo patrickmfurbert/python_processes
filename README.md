@@ -15,3 +15,5 @@ python3 processes.py lm [pid] (Prints shared objects for specified process)
 python3 processes.py ep [pid] (Prints address ranges for executable pages)
 
 python3 processes.py rm [pid] [start_address] [end_address] (prints memory for specified addresses range)
+
+**omit square brackets 
