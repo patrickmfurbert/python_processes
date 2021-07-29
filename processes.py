@@ -104,10 +104,10 @@ class process_tool:
         help = 'Process Tool Help\n' \
              '1.) No arguments - Prints the help\n' \
              '2.) rp           - Prints running process\n' \
-             '3.) rt <pid>     - Prints running threads within process boundary\n' \
+             '3.) rt <pid>     - Prints running threads in multithread process\n' \
              '4.) lm <pid>     - Prints loaded modules within the processes\n' \
-             #'5.) ep <pid>     - Prints address ranges for executable pages within process\n' \    
-             #'6.) rm <pid> <start_address> <end_address> - Dumps memory for specified addresses\n'
+             '5.) ep <pid>     - Prints address ranges for executable pages within process\n' \
+             '6.) rm <pid> <start_address> <end_address> - Dumps memory for specified addresses\n'
         
         print(help)
 
