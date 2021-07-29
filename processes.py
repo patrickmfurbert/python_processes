@@ -1,6 +1,7 @@
 # Author: Patrick Furbert
 # Date: 7/26/2021
 
+import binascii
 import subprocess
 import sys
 import re
@@ -63,9 +64,11 @@ class process_tool:
         # Regular Expresson Object
         regex = re.compile(expression)
 
+        # open maps 
         with open(f'/proc/{pid}/maps') as file:
             maps = [line.rstrip() for line in file]
 
+        # get the address ranges of the executatble pages
         print(f'Address Ranges Executable Pages in Proccess {pid}:')
         for line in maps:
             try:
@@ -73,8 +76,23 @@ class process_tool:
                     print(regex.search(line).group(1))
             except AttributeError:
                 pass
+        
+    def print_memory(self, pid, start, end):
+        """
+        prints memory for 
+        specified start and end address
+        """
+        mem_file = open(f"/proc/{pid}/mem", 'rb', 0)
+        mem_file.seek(start)
+        hex = binascii.hexlify(mem_file.read(end-start)).decode('ascii')
 
+        bytes = [hex[i:i+2] for i in range(0, len(hex), 2)]
 
+        for x in range(len(bytes)):
+            if x % 12 != 0:
+                print(bytes[x], end= ' ')
+            else:
+                print(bytes[x])
 
     def print_help(self):
         """
@@ -93,7 +111,6 @@ class process_tool:
 
 
 def main():
-
 
     # create process_tool object
     processes = process_tool()
